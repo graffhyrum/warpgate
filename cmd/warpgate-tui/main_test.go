@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strings"
 	"testing"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -114,10 +115,10 @@ func TestView_WithData(t *testing.T) {
 	if view == "" {
 		t.Error("expected non-empty view")
 	}
-	if !containsStr(view, "warpgate dashboard") {
+	if !strings.Contains(view, "warpgate dashboard") {
 		t.Error("expected title in view")
 	}
-	if !containsStr(view, "aws") {
+	if !strings.Contains(view, "aws") {
 		t.Error("expected aws provider in view")
 	}
 }
@@ -136,7 +137,7 @@ func TestView_WithError(t *testing.T) {
 	m := newModel("http://localhost:8080")
 	m.err = http.ErrServerClosed
 	view := m.View()
-	if !containsStr(view, "http: Server closed") {
+	if !strings.Contains(view, "http: Server closed") {
 		t.Error("expected error message in view")
 	}
 }
@@ -145,7 +146,7 @@ func TestFetchProviders_Integration(t *testing.T) {
 	t.Parallel()
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]any{
+		_ = json.NewEncoder(w).Encode(map[string]any{
 			"providers": []map[string]any{
 				{"name": "aws", "healthy": true, "latency": "10ms"},
 			},
@@ -175,7 +176,7 @@ func TestFetchResources_Integration(t *testing.T) {
 	t.Parallel()
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 		w.Header().Set("Content-Type", "application/json")
-		json.NewEncoder(w).Encode(map[string]any{
+		_ = json.NewEncoder(w).Encode(map[string]any{
 			"resources": []map[string]any{
 				{"id": "a1", "name": "srv", "type": "compute", "provider": "aws", "region": "us-east-1", "status": "running"},
 			},
@@ -216,10 +217,10 @@ func TestResourceBreakdown(t *testing.T) {
 		{Type: "compute"}, {Type: "compute"}, {Type: "storage"},
 	}
 	result := resourceBreakdown(resources)
-	if !containsStr(result, "2 compute") {
+	if !strings.Contains(result, "2 compute") {
 		t.Errorf("expected 2 compute in breakdown, got %s", result)
 	}
-	if !containsStr(result, "1 storage") {
+	if !strings.Contains(result, "1 storage") {
 		t.Errorf("expected 1 storage in breakdown, got %s", result)
 	}
 }
@@ -238,15 +239,3 @@ func TestResourcesToRows(t *testing.T) {
 	}
 }
 
-func containsStr(s, substr string) bool {
-	return len(s) >= len(substr) && searchStr(s, substr)
-}
-
-func searchStr(s, substr string) bool {
-	for i := 0; i <= len(s)-len(substr); i++ {
-		if s[i:i+len(substr)] == substr {
-			return true
-		}
-	}
-	return false
-}

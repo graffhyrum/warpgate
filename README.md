@@ -8,7 +8,7 @@ A multi-provider infrastructure gateway that aggregates resource state across cl
 |---|---|
 | **Go idioms** | Interfaces, typed string constants, `errgroup` fan-out, `context` propagation, `slog` structured logging, error wrapping with `%w`, table-driven tests |
 | **Cloud provider aggregation** | `Provider` interface with 3 mock implementations (AWS, GCP, Azure) returning region-appropriate, cloud-realistic resource data |
-| **Concurrent distributed patterns** | Registry fans out to providers via `errgroup` with per-provider `context.WithTimeout`; partial failures return available results + warnings instead of failing the entire request |
+| **Concurrent distributed patterns** | Registry fans out to providers concurrently via `errgroup` with per-provider `context.WithTimeout`; partial failures collected as warnings alongside available results; `GetResource` distinguishes not-found from real provider errors across concurrent lookups |
 | **HTTP server hardening** | Read/write/idle timeouts, panic recovery with partial-write detection, opaque error responses (internal details logged server-side, correlated via `X-Request-Id`), input validation at the system boundary |
 | **Debugging across the stack** | Every request gets a UUID in the `X-Request-Id` response header, threaded through `slog` context for end-to-end correlation between client response and server logs |
 | **CI/CD + containers** | GitHub Actions (vet, test -race, golangci-lint, CGO_ENABLED=0 build), multi-stage Dockerfile with `go mod verify` and distroless nonroot runtime |

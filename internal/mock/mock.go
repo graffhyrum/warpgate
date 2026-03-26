@@ -35,9 +35,14 @@ func New(cfg Config) *Provider {
 	}
 }
 
+// Name implements provider.Provider.
 func (p *Provider) Name() string { return p.name }
 
-func (p *Provider) ListResources(_ context.Context, filter provider.ResourceFilter) ([]provider.Resource, error) {
+// ListResources implements provider.Provider.
+func (p *Provider) ListResources(ctx context.Context, filter provider.ResourceFilter) ([]provider.Resource, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	var result []provider.Resource
 	for _, r := range p.resources {
 		if r.MatchesFilter(filter) {
@@ -50,7 +55,11 @@ func (p *Provider) ListResources(_ context.Context, filter provider.ResourceFilt
 	return result, nil
 }
 
-func (p *Provider) GetResource(_ context.Context, id string) (*provider.Resource, error) {
+// GetResource implements provider.Provider.
+func (p *Provider) GetResource(ctx context.Context, id string) (*provider.Resource, error) {
+	if err := ctx.Err(); err != nil {
+		return nil, err
+	}
 	for _, r := range p.resources {
 		if r.ID == id {
 			// Return a copy to prevent aliasing into internal slice
@@ -61,6 +70,7 @@ func (p *Provider) GetResource(_ context.Context, id string) (*provider.Resource
 	return nil, provider.ErrNotFound
 }
 
+// CheckHealth implements provider.Provider.
 func (p *Provider) CheckHealth(_ context.Context) provider.HealthStatus {
 	hs := provider.HealthStatus{
 		Provider: p.name,

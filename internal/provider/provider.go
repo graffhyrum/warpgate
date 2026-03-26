@@ -12,6 +12,7 @@ import (
 // ResourceType classifies infrastructure resources.
 type ResourceType string
 
+// Known resource types.
 const (
 	TypeCompute  ResourceType = "compute"
 	TypeStorage  ResourceType = "storage"
@@ -27,6 +28,7 @@ var knownTypes = map[ResourceType]bool{
 // ResourceStatus represents the operational state of a resource.
 type ResourceStatus string
 
+// Known resource statuses.
 const (
 	StatusRunning  ResourceStatus = "running"
 	StatusStopped  ResourceStatus = "stopped"

@@ -12,16 +12,9 @@ linters:
     - prealloc
 
 linters-settings:
-  gocritic:
-    enabled-checks:
-      - appendAssign
-      - dupBranchBody
-      - dupCase
-      - elseif
-      - ifElseChain
-      - singleCaseSwitch
-      - sloppyLen
-      - unlambda
+  errcheck:
+    exclude-functions:
+      - (io.Closer).Close
   revive:
     rules:
       - name: blank-imports

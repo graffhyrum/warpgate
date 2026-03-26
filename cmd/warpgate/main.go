@@ -17,6 +17,10 @@ import (
 )
 
 func main() {
+	os.Exit(run())
+}
+
+func run() int {
 	cfg := config.Load()
 
 	logger := slog.New(slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
@@ -47,7 +51,7 @@ func main() {
 	case err := <-serverErr:
 		if err != nil && !errors.Is(err, http.ErrServerClosed) {
 			logger.Error("server error", "error", err)
-			os.Exit(1)
+			return 1
 		}
 	case <-ctx.Done():
 	}
@@ -57,7 +61,7 @@ func main() {
 
 	if err := srv.Shutdown(shutdownCtx); err != nil {
 		logger.Error("shutdown error", "error", err)
-		os.Exit(1)
+		return 1
 	}
 
 	// Drain the server goroutine
@@ -65,4 +69,5 @@ func main() {
 		logger.Error("server error", "error", err)
 	}
 	logger.Info("server stopped")
+	return 0
 }

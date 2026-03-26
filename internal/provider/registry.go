@@ -122,11 +122,6 @@ func (r *Registry) ListAll(ctx context.Context, filter ResourceFilter) ListResul
 func (r *Registry) GetResource(ctx context.Context, id string) (*Resource, error) {
 	snap := r.snapshotProviders()
 
-	type result struct {
-		resource *Resource
-		err      error
-	}
-
 	var (
 		mu      sync.Mutex
 		found   *Resource
