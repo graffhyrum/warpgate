@@ -1,0 +1,38 @@
+linters:
+  enable:
+    - errcheck
+    - govet
+    - ineffassign
+    - staticcheck
+    - unused
+    - gosimple
+    - gocritic
+    - revive
+    - misspell
+    - prealloc
+
+linters-settings:
+  gocritic:
+    enabled-checks:
+      - appendAssign
+      - dupBranchBody
+      - dupCase
+      - elseif
+      - ifElseChain
+      - singleCaseSwitch
+      - sloppyLen
+      - unlambda
+  revive:
+    rules:
+      - name: blank-imports
+      - name: context-as-argument
+      - name: error-return
+      - name: error-strings
+      - name: exported
+      - name: increment-decrement
+      - name: var-naming
+
+issues:
+  exclude-use-default: false
+  max-issues-per-linter: 0
+  max-same-issues: 0

@@ -75,6 +75,20 @@ Find that request in server logs:
 {"time":"...","level":"INFO","msg":"request","request_id":"3f2a1b4c-...","method":"GET","path":"/api/v1/resources/aws-ec2-001","status":200,"duration_ms":1}
 ```
 
+## TUI Dashboard
+
+A terminal dashboard built with [Bubbletea](https://github.com/charmbracelet/bubbletea) that displays live provider health and resource inventory:
+
+```bash
+make build
+./bin/warpgate &       # start the server
+./bin/warpgate-tui     # launch the dashboard
+```
+
+Controls: `↑`/`↓` navigate resources, `r` refresh, `q` quit. Auto-refreshes every 3 seconds.
+
+Connect to a remote server: `./bin/warpgate-tui http://remote-host:8080`
+
 ## Development
 
 ```bash

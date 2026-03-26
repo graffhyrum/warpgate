@@ -4,6 +4,7 @@ BINARY := bin/warpgate
 
 build:
 	go build -o $(BINARY) ./cmd/warpgate
+	go build -o bin/warpgate-tui ./cmd/warpgate-tui
 
 run: build
 	./$(BINARY)
