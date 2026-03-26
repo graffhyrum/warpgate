@@ -1,5 +1,7 @@
 # warpgate
 
+[![CI](https://github.com/graffhyrum/warpgate/actions/workflows/ci.yaml/badge.svg)](https://github.com/graffhyrum/warpgate/actions/workflows/ci.yaml)
+
 A multi-provider infrastructure gateway that aggregates resource state across cloud providers through a pluggable provider interface. Built as a focused demonstration of Go patterns used in production cloud infrastructure services.
 
 ## What This Demonstrates
