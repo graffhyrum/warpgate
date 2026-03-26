@@ -87,12 +87,17 @@ curl -sI localhost:8080/health | grep X-Request-Id
 
 A terminal dashboard built with [Bubbletea](https://github.com/charmbracelet/bubbletea) / [Lipgloss](https://github.com/charmbracelet/lipgloss) / [Bubbles](https://github.com/charmbracelet/bubbles) that displays live provider health and resource inventory with auto-refresh.
 
+The TUI connects to a running warpgate server -- start the server first:
+
 ```bash
-./bin/warpgate-tui                          # connect to localhost:8080
-./bin/warpgate-tui http://remote-host:8080  # connect to remote server
+./bin/warpgate &                            # start the server (terminal 1)
+./bin/warpgate-tui                          # launch the dashboard (terminal 2)
+./bin/warpgate-tui http://remote-host:8080  # or connect to a remote server
 ```
 
-`↑`/`↓` navigate resources, `r` manual refresh, `q` quit. Refreshes every 3 seconds.
+If the server isn't running, the TUI shows a connection error and retries automatically every 3 seconds.
+
+`↑`/`↓` navigate resources, `r` manual refresh, `q` quit.
 
 ## Development
 
